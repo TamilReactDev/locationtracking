@@ -12,7 +12,7 @@
 
 <body>
 	<a-scene vr-mode-ui="enabled: false" arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
-		<a-camera  gps-camera="minDistance: 20;" rotation-reader></a-camera>
+		<a-camera gps-camera="minDistance: 20;" gps-camera rotation-reader></a-camera>
 	</a-scene>
 
 	<script>
@@ -27,29 +27,29 @@
 
 		function staticLoadPlaces() {
 			return [{
-				name: "Place 1",
-				location: {
-					lat: 11.3323802,
-					lng: 77.7042767,
+					name: "Place 1",
+					location: {
+						lat: 11.3323802,
+						lng: 77.7042767,
+					},
+					img: 'location.png'
 				},
-				img: 'location.png'
-			},
-			{
-				name: "Place 2",
-				location: {
-					lat: 11.332399,
-					lng: 77.704526,
+				{
+					name: "Place 2",
+					location: {
+						lat: 11.332399,
+						lng: 77.704526,
+					},
+					img: 'location.png'
 				},
-				img: 'location.png'
-			},
-			{
-				name: "Place 3",
-				location: {
-					lat: 11.332411,
-					lng: 77.704356,
-				},
-				img: 'location.png'
-			}
+				{
+					name: "Place 3",
+					location: {
+						lat: 11.332411,
+						lng: 77.704356,
+					},
+					img: 'location.png'
+				}
 			];
 		}
 
@@ -63,7 +63,6 @@
 				const icon = document.createElement('a-image');
 				icon.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
 				icon.setAttribute('name', place.name);
-				icon.setAttribute('class', 'places');
 				icon.setAttribute('src', `assets/${place.img}`);
 				icon.setAttribute('look-at', '[gps-camera]');
 				icon.setAttribute('scale', '2 2 2');
@@ -91,14 +90,10 @@
 					}
 				};
 
-				const entity = icon;
-				console.log(entity.getAttribute('distance'))
+				
 				scene.appendChild(icon);
 			});
 		}
-	</script>
-	<script>
-
 	</script>
 </body>
 

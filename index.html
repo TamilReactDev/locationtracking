@@ -2,26 +2,104 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>GeoAR.js demo</title>
-  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.4/aframe/build/aframe-ar-nft.js"></script>
-
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>GeoAR.js Demo</title>
+	<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+	<script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+	<script src="https://raw.githack.com/AR-js-org/AR.js/3.4.4/aframe/build/aframe-ar-nft.js"></script>
 </head>
 
 <body>
-  <a-scene vr-mode-ui="enabled: false" arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
-    <a-image src="assets/ar.png" look-at="[gps-camera]" scale="10 10 10"
-      gps-entity-place="latitude: 11.3323802; longitude: 77.7042767;"></a-image>
-    <a-image src="assets/asset.jpeg" look-at="[gps-camera]" scale="10 10 10"
-      gps-entity-place="latitude: 11.332399; longitude: 77.704526;"></a-image>
-    <a-image src="assets/asset.png" look-at="[gps-camera]" scale="10 10 10"
-      gps-entity-place="latitude: 11.332411; longitude: 77.704356;"></a-image>
-    <a-camera rotation-reader gps-camera>
-    </a-camera>
-  </a-scene>
+	<a-scene vr-mode-ui="enabled: false" arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
+		<a-camera near="5" far="10" gps-camera="minDistance: 20;" rotation-reader></a-camera>
+	</a-scene>
+
+	<script>
+		window.onload = () => {
+			let method = 'static';
+
+			if (method === 'static') {
+				let places = staticLoadPlaces();
+				renderPlaces(places);
+			}
+		};
+
+		function staticLoadPlaces() {
+			return [{
+				name: "Place 1",
+				location: {
+					lat: 11.3323802,
+					lng: 77.7042767,
+				},
+				img: 'location.png'
+			},
+			{
+				name: "Place 2",
+				location: {
+					lat: 11.332399,
+					lng: 77.704526,
+				},
+				img: 'location.png'
+			},
+			{
+				name: "Place 3",
+				location: {
+					lat: 11.332411,
+					lng: 77.704356,
+				},
+				img: 'location.png'
+			}
+			];
+		}
+
+		function renderPlaces(places) {
+			let scene = document.querySelector('a-scene');
+
+			places.forEach((place) => {
+				const latitude = place.location.lat;
+				const longitude = place.location.lng;
+
+				const icon = document.createElement('a-image');
+				icon.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
+				icon.setAttribute('name', place.name);
+				icon.setAttribute('class', 'places');
+				icon.setAttribute('src', `assets/${place.img}`);
+				icon.setAttribute('look-at', '[gps-camera]');
+				icon.setAttribute('scale', '2 2 2');
+
+				icon.addEventListener('loaded', () => window.dispatchEvent(new CustomEvent('gps-entity-place-loaded')));
+
+				const clickListener = function (ev) {
+					ev.stopPropagation();
+					ev.preventDefault();
+
+					const name = ev.target.getAttribute('name');
+					const el = ev.detail.intersection && ev.detail.intersection.object.el;
+
+					if (el && el === ev.target) {
+						const label = document.createElement('span');
+						const container = document.createElement('div');
+						container.setAttribute('id', 'place-label');
+						label.innerText = name;
+						container.appendChild(label);
+						document.body.appendChild(container);
+
+						setTimeout(() => {
+							container.parentElement.removeChild(container);
+						}, 1500);
+					}
+				};
+
+				const entity = icon;
+				console.log(entity.getAttribute('distance'))
+				scene.appendChild(icon);
+			});
+		}
+	</script>
+	<script>
+
+	</script>
 </body>
 
 </html>

@@ -2,99 +2,22 @@
 <html>
 
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>GeoAR.js Demo</title>
-	<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-	<script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-	<script src="https://raw.githack.com/AR-js-org/AR.js/3.4.4/aframe/build/aframe-ar-nft.js"></script>
+    <meta charset="utf-8" />
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
-	<a-scene vr-mode-ui="enabled: false" arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
-		<a-camera  gps-camera rotation-reader></a-camera>
-	</a-scene>
-
-	<script>
-		window.onload = () => {
-			let method = 'static';
-
-			if (method === 'static') {
-				let places = staticLoadPlaces();
-				renderPlaces(places);
-			}
-		};
-
-		function staticLoadPlaces() {
-			return [{
-					name: "Place 1",
-					location: {
-						lat: 11.3323802,
-						lng: 77.7042767,
-					},
-					img: 'location.png'
-				},
-				{
-					name: "Place 2",
-					location: {
-						lat: 11.332399,
-						lng: 77.704526,
-					},
-					img: 'location.png'
-				},
-				{
-					name: "Place 3",
-					location: {
-						lat: 11.332411,
-						lng: 77.704356,
-					},
-					img: 'location.png'
-				}
-			];
-		}
-
-		function renderPlaces(places) {
-			let scene = document.querySelector('a-scene');
-
-			places.forEach((place) => {
-				const latitude = place.location.lat;
-				const longitude = place.location.lng;
-
-				const icon = document.createElement('a-image');
-				icon.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
-				icon.setAttribute('name', place.name);
-				icon.setAttribute('src', `assets/${place.img}`);
-				icon.setAttribute('look-at', '[gps-camera]');
-				icon.setAttribute('scale', '2 2 2');
-
-				icon.addEventListener('loaded', () => window.dispatchEvent(new CustomEvent('gps-entity-place-loaded')));
-
-				const clickListener = function (ev) {
-					ev.stopPropagation();
-					ev.preventDefault();
-
-					const name = ev.target.getAttribute('name');
-					const el = ev.detail.intersection && ev.detail.intersection.object.el;
-
-					if (el && el === ev.target) {
-						const label = document.createElement('span');
-						const container = document.createElement('div');
-						container.setAttribute('id', 'place-label');
-						label.innerText = name;
-						container.appendChild(label);
-						document.body.appendChild(container);
-
-						setTimeout(() => {
-							container.parentElement.removeChild(container);
-						}, 1500);
-					}
-				};
-
-				
-				scene.appendChild(icon);
-			});
-		}
-	</script>
+    <video id='video1' autoplay playsinline style='display:none'></video>
+    <canvas id="canvas1" style='background-color: black; width:100%; height:100%; display:block'></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
+    <script src="app.js"></script>
 </body>
 
 </html>
+

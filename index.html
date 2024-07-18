@@ -20,17 +20,17 @@
             <a-asset-item id="animated-asset-1" src="assets/Arrow.glb"></a-asset-item>
         </a-assets>
 
-        <a-entity look-at="[gps-camera]" animation-mixer="loop: repeat" gltf-model="#animated-asset-1" scale="2 2 2"
+        <a-entity look-at="[gps-camera]" animation-mixer="loop: repeat" gltf-model="#animated-asset-1" scale="10 10 10"
             gps-entity-place="latitude:11.3323995; longitude:77.7041484;">
             <a-text class="distance-text" value="Place Name 1" align="center" rotation="0 0 0" position="0 1 0" scale="1 1 1" color="#000"></a-text>
         </a-entity>
 
-        <a-entity look-at="[gps-camera]" animation-mixer="loop: repeat" gltf-model="#animated-asset" scale="2 2 2"
+        <a-entity look-at="[gps-camera]" animation-mixer="loop: repeat" gltf-model="#animated-asset" scale="10 10 10"
             gps-entity-place="latitude:11.3324033; longitude:77.7039629;">
             <a-text class="distance-text" value="Place Name 2" align="center" position="0 1 0" scale="1 1 1" color="#000"></a-text>
         </a-entity>
 
-        <a-camera id="gpsCamera" gps-camera="gpsMinDistance: 10; accelerationToMove: 1.0" rotation-reader></a-camera>
+        <a-camera id="gpsCamera" gps-camera="gpsMinDistance: 10;" rotation-reader></a-camera>
     </a-scene>
 
     <script>
@@ -39,22 +39,9 @@
 
             camera.addEventListener('gps-camera-update-position', (e) => {
                 alert('position update')
-                const currentPos = {
-                    latitude: e.detail.position.latitude,
-                    longitude: e.detail.position.longitude
-                };
+                
 
-                document.querySelectorAll('[gps-entity-place]').forEach(place => {
-                    const placePos = {
-                        latitude: place.getAttribute('gps-entity-place').latitude,
-                        longitude: place.getAttribute('gps-entity-place').longitude
-                    };
-
-                    const distance = geolib.getDistance(currentPos, placePos);
-
-                    const distanceText = place.querySelector('.distance-text');
-                    distanceText.setAttribute('value', `Distance: ${distance} meters`);
-                });
+                alert('fyuy')
             });
         });
     </script>

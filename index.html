@@ -33,8 +33,6 @@
                 if (!this.cameraPosition) return;
 
                 const entityPosition = this.el.components['gps-new-entity-place'].attrValue;
-                const checkDistance = this.el.components['gps-new-entity-place'].distance;
-                alert(checkDistance === undefined ? "Please move to a new location to obtain the distance" : `This object is ${checkDistance} metres away.`);
                 const showDistance = this.el.children;
                 const distance = geolib.getDistance(
                     { latitude: this.cameraPosition.latitude, longitude: this.cameraPosition.longitude },
@@ -55,19 +53,19 @@
 
     </script>
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
-        renderer='antialias: false; alpha: true'>
-        <a-camera gps-new-camera='gpsMinDistance:3' arjs-device-orientation-controls='smoothingFactor:0.1'></a-camera>
+        renderer='antialias: true; alpha: true'>
+        <a-camera gps-new-camera='gpsMinDistance:3'></a-camera>
         <a-assets>
             <a-asset-item id="animated-asset" src="assets/asset.glb"></a-asset-item>
             <a-asset-item id="animated-asset-1" src="assets/Arrow.glb"></a-asset-item>
         </a-assets>
         <a-entity gltf-model="#animated-asset-1" rotation="0 100 0" id="box" material='color: red' distance-checker geometry='primitive: box'
-            gps-new-entity-place="latitude:11.332396; longitude:77.704504" scale="2">
+            gps-new-entity-place="latitude:11.332396; longitude:77.704504" scale="1" scale="1">
             <a-text id="boxid1" look-at="[gps-new-camera]" value="Place Name 2" align="center" position="0 1 0"
                 scale="1 1 1" color="#000"></a-text>
         </a-entity>
         <a-entity id="box" material='color: red' rotation="0 100 0" gltf-model="#animated-asset" distance-checker geometry='primitive: box'
-            gps-new-entity-place="latitude:11.332390 ; longitude:77.704367" scale="2">
+            gps-new-entity-place="latitude:11.332390 ; longitude:77.704367" scale="1">
             <a-text id="boxid1" look-at="[gps-new-camera]" value="Place Name 2" align="center" position="0 1 0"
                 scale="1 1 1" color="#000"></a-text>
         </a-entity>
